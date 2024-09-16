@@ -1,4 +1,4 @@
-#
+# build.sh v1.21.4
 # wget build script for Windows environment
 # Author: WebFolder
 # https://webfolder.io

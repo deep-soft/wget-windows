@@ -1,5 +1,5 @@
 # 2024-03-07 13:20
-#
+# 1.24.5
 name: act-build
 
 on:
@@ -7,12 +7,13 @@ on:
 
 env:
   TAG_NAME:      "wget"
-  TAG_VERSION:   "v1.21.4"
+  TAG_VERSION:   "v1.24.5"
   TAG_BUILD:     "-b"
   TAG_REF:       "0000000"
   PROG_NAME:     "wget"
-  PROG_VERSION:  "v1.21.4"
-  VERSION:       "1.21.4"
+  PROG_VERSION:  "v1.24.5"
+  VERSION:       "1.24.5"
+  SH_FILE_NAME:  "-1-24-5"
   DRAFT:         false
 
 jobs:
@@ -31,7 +32,7 @@ jobs:
       - name: Build wget 64-bit
         run: |
           x86_64-w64-mingw32-gcc --version
-          ./build.sh
+          ./build${{ env.SH_FILE_NAME }}.sh
 
       - name: Build wget 32-bit
         run: |

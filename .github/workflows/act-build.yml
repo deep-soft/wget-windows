@@ -32,12 +32,12 @@ jobs:
       - name: Build wget 64-bit
         run: |
           x86_64-w64-mingw32-gcc --version
-          ./build${{ env.SH_FILE_NAME }}.sh
+          bash ./build${{ env.SH_FILE_NAME }}.sh
 
       - name: Build wget 32-bit
         run: |
           i686-w64-mingw32-gcc --version
-          ./build-x86.sh
+          bash ./build-x86${{ env.SH_FILE_NAME }}.sh
 
       - name: Publish
         continue-on-error: true

@@ -4,6 +4,12 @@
 # https://webfolder.io
 # March 15, 2021
 #
+libidn2="libidn2-2.3.7"
+libpsl="libpsl-0.21.5"
+gnutls="gnutls-3.8.7.1"
+pcre2="pcre2-10.44"
+wget1="wget-1.24.5"
+
 mkdir build-wget-webfolder.io
 cd build-wget-webfolder.io || exit
 mkdir install
@@ -74,9 +80,10 @@ fi
 # build idn2
 # -----------------------------------------------------------------------------
 if [ ! -f "$INSTALL_PATH"/lib/libidn2.a ]; then
-  wget -nc https://ftp.gnu.org/gnu/libidn/libidn2-2.3.0.tar.gz
-  tar -xf libidn2-2.3.0.tar.gz
-  cd libidn2-2.3.0 || exit
+  #wget -nc https://ftp.gnu.org/gnu/libidn/libidn2-2.3.0.tar.gz
+  wget -nc https://ftp.gnu.org/gnu/libidn/$libidn2.tar.gz
+  tar -xf $libidn2.tar.gz
+  cd $libidn2 || exit
   ./configure \
   --host=$WGET_MINGW_HOST \
   --disable-shared \
@@ -111,9 +118,9 @@ fi
 # build gnutls
 # -----------------------------------------------------------------------------
 if [ ! -f "$INSTALL_PATH"/lib/libgnutls.a ]; then
-  wget -nc https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.0.tar.xz
-  tar -xf gnutls-3.8.0.tar.xz
-  cd gnutls-3.8.0 || exit
+  wget -nc https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/$gnutls.tar.xz
+  tar -xf $gnutls.tar.xz
+  cd $gnutls || exit
   PKG_CONFIG_PATH="$INSTALL_PATH/lib/pkgconfig" \
   CFLAGS="-I$INSTALL_PATH/include" \
   LDFLAGS="-L$INSTALL_PATH/lib" \
@@ -189,9 +196,9 @@ fi
 # build psl
 # -----------------------------------------------------------------------------
 if [ ! -f "$INSTALL_PATH"/lib/libpsl.a ]; then
-  wget -nc https://github.com/rockdaboot/libpsl/releases/download/0.21.1/libpsl-0.21.1.tar.gz
-  tar -xf libpsl-0.21.1.tar.gz
-  cd libpsl-0.21.1 || exit
+  wget -nc https://github.com/rockdaboot/libpsl/releases/download/0.21.1/$libpsl.tar.gz
+  tar -xf $libpsl.tar.gz
+  cd $libpsl || exit
   CFLAGS="-I$INSTALL_PATH/include" \
   LIBS="-L$INSTALL_PATH/lib -lunistring -lidn2" \
   LIBIDN2_CFLAGS="-I$INSTALL_PATH/include" \
@@ -216,9 +223,9 @@ fi
 # build pcre2
 # -----------------------------------------------------------------------------
 if [ ! -f "$INSTALL_PATH"/lib/libpcre2-8.a ]; then
-  wget -nc https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.41/pcre2-10.41.tar.gz
-  tar -xf pcre2-10.41.tar.gz
-  cd pcre2-10.41 || exit
+  wget -nc https://github.com/PCRE2Project/pcre2/releases/download/$pcre2/$pcre2.tar.gz
+  tar -xf $pcre2.tar.gz
+  cd $pcre2 || exit
   ./configure \
   --host=$WGET_MINGW_HOST \
   --disable-shared \
@@ -386,9 +393,9 @@ fi
 # -----------------------------------------------------------------------------
 # build wget (gnuTLS)
 # -----------------------------------------------------------------------------
-wget -nc https://ftp.gnu.org/gnu/wget/wget-1.24.5.tar.gz
-tar -xf wget-1.24.5.tar.gz
-cd wget-1.24.5 || exit
+wget -nc https://ftp.gnu.org/gnu/wget/$wget1.tar.gz
+tar -xf $wget1.tar.gz
+cd $wget1 || exit
 CFLAGS="-I$INSTALL_PATH/include -DGNUTLS_INTERNAL_BUILD=1 -DCARES_STATICLIB=1 -DPCRE2_STATIC=1 -DNDEBUG -O2 -march=$WGET_ARCH -mtune=generic" \
  LDFLAGS="-L$INSTALL_PATH/lib -static -static-libgcc" \
  GNUTLS_CFLAGS=$CFLAGS \

@@ -401,51 +401,56 @@ if [ ! -f "$INSTALL_PATH"/lib/libssl.a ]; then
  make install_sw
  cd ..
 fi
+# skip gnuTLS version of wget1
 # -----------------------------------------------------------------------------
 # build wget (gnuTLS)
+# -----------------------------------------------------------------------------
+# wget -nc ${wget[2]}
+# tar -xf ${wget[1]}
+# cd ${wget[0]} || exit
+# CFLAGS="-I$INSTALL_PATH/include -DGNUTLS_INTERNAL_BUILD=1 -DCARES_STATICLIB=1 -DPCRE2_STATIC=1 -DNDEBUG -O2 -march=$WGET_ARCH -mtune=generic" \
+#  LDFLAGS="-L$INSTALL_PATH/lib -static -static-libgcc" \
+#  GNUTLS_CFLAGS=$CFLAGS \
+#  GNUTLS_LIBS="-L$INSTALL_PATH/lib -lgnutls -lbcrypt -lncrypt" \
+#  LIBPSL_CFLAGS=$CFLAGS \
+#  LIBPSL_LIBS="-L$INSTALL_PATH/lib -lpsl" \
+#  CARES_CFLAGS=$CFLAGS \
+#  CARES_LIBS="-L$INSTALL_PATH/lib -lcares" \
+#  PCRE2_CFLAGS=$CFLAGS \
+#  PCRE2_LIBS="-L$INSTALL_PATH/lib -lpcre2-8"  \
+#  METALINK_CFLAGS="-I$INSTALL_PATH/include" \
+#  METALINK_LIBS="-L$INSTALL_PATH/lib -lmetalink -lexpat" \
+#  LIBS="-L$INSTALL_PATH/lib -lhogweed -lnettle -lgmp -ltasn1 -lidn2 -lpsl -liphlpapi -lcares -lunistring -liconv -lpcre2-8 -lmetalink -lexpat -lgpgme -lassuan -lgpg-error -lz -lcrypt32 -lpthread" \
+#  ./configure \
+#  --host=$WGET_MINGW_HOST \
+#  --prefix="$INSTALL_PATH" \
+#  --disable-debug \
+#  --disable-valgrind-tests \
+#  --enable-iri \
+#  --enable-pcre2 \
+#  --with-ssl=gnutls \
+#  --with-included-libunistring \
+#  --with-libidn \
+#  --with-cares \
+#  --with-libpsl \
+#  --with-metalink \
+#  --with-gpgme-prefix="$INSTALL_PATH"
+# (($? != 0)) && { printf '%s\n' "[wget gnutls] configure failed"; exit 1; }
+# make clean
+# make
+# (($? != 0)) && { printf '%s\n' "[wget gnutls] make failed"; exit 1; }
+# make install
+# (($? != 0)) && { printf '%s\n' "[wget gnutls] make install"; exit 1; }
+# mkdir "$INSTALL_PATH"/wget-gnutls
+# cp "$INSTALL_PATH"/bin/wget.exe "$INSTALL_PATH"/wget-gnutls/wget-gnutls-x64.exe
+# $MINGW_STRIP_TOOL "$INSTALL_PATH"/wget-gnutls/wget-gnutls-x64.exe
+
+# -----------------------------------------------------------------------------
+# build wget (openssl)
 # -----------------------------------------------------------------------------
 wget -nc ${wget[2]}
 tar -xf ${wget[1]}
 cd ${wget[0]} || exit
-CFLAGS="-I$INSTALL_PATH/include -DGNUTLS_INTERNAL_BUILD=1 -DCARES_STATICLIB=1 -DPCRE2_STATIC=1 -DNDEBUG -O2 -march=$WGET_ARCH -mtune=generic" \
- LDFLAGS="-L$INSTALL_PATH/lib -static -static-libgcc" \
- GNUTLS_CFLAGS=$CFLAGS \
- GNUTLS_LIBS="-L$INSTALL_PATH/lib -lgnutls -lbcrypt -lncrypt" \
- LIBPSL_CFLAGS=$CFLAGS \
- LIBPSL_LIBS="-L$INSTALL_PATH/lib -lpsl" \
- CARES_CFLAGS=$CFLAGS \
- CARES_LIBS="-L$INSTALL_PATH/lib -lcares" \
- PCRE2_CFLAGS=$CFLAGS \
- PCRE2_LIBS="-L$INSTALL_PATH/lib -lpcre2-8"  \
- METALINK_CFLAGS="-I$INSTALL_PATH/include" \
- METALINK_LIBS="-L$INSTALL_PATH/lib -lmetalink -lexpat" \
- LIBS="-L$INSTALL_PATH/lib -lhogweed -lnettle -lgmp -ltasn1 -lidn2 -lpsl -liphlpapi -lcares -lunistring -liconv -lpcre2-8 -lmetalink -lexpat -lgpgme -lassuan -lgpg-error -lz -lcrypt32 -lpthread" \
- ./configure \
- --host=$WGET_MINGW_HOST \
- --prefix="$INSTALL_PATH" \
- --disable-debug \
- --disable-valgrind-tests \
- --enable-iri \
- --enable-pcre2 \
- --with-ssl=gnutls \
- --with-included-libunistring \
- --with-libidn \
- --with-cares \
- --with-libpsl \
- --with-metalink \
- --with-gpgme-prefix="$INSTALL_PATH"
-(($? != 0)) && { printf '%s\n' "[wget gnutls] configure failed"; exit 1; }
-make clean
-make
-(($? != 0)) && { printf '%s\n' "[wget gnutls] make failed"; exit 1; }
-make install
-(($? != 0)) && { printf '%s\n' "[wget gnutls] make install"; exit 1; }
-mkdir "$INSTALL_PATH"/wget-gnutls
-cp "$INSTALL_PATH"/bin/wget.exe "$INSTALL_PATH"/wget-gnutls/wget-gnutls-x64.exe
-$MINGW_STRIP_TOOL "$INSTALL_PATH"/wget-gnutls/wget-gnutls-x64.exe
-# -----------------------------------------------------------------------------
-# build wget (openssl)
-# -----------------------------------------------------------------------------
 make clean
 cp ../../windows-openssl.diff .
 patch src/openssl.c < windows-openssl.diff

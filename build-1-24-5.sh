@@ -430,7 +430,7 @@ fi
 #  --enable-pcre2 \
 #  --with-ssl=gnutls \
 #  --with-included-libunistring \
-#  --with-libidn \
+#  --with-libidn2 \
 #  --with-cares \
 #  --with-libpsl \
 #  --with-metalink \
@@ -476,7 +476,7 @@ CFLAGS="-I$INSTALL_PATH/include -DCARES_STATICLIB=1 -DPCRE2_STATIC=1 -DNDEBUG -O
  --enable-pcre2 \
  --with-ssl=openssl \
  --with-included-libunistring \
- --with-libidn \
+ --with-libidn2 \
  --with-cares \
  --with-libpsl \
  --with-metalink \
